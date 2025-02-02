@@ -7,7 +7,7 @@ class Position(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    position = models.ForeignKey(Position, on_delete=models.CASCADE, related_name="worker")
 
 
 class TaskType(models.Model):
@@ -29,5 +29,5 @@ class Task(models.Model):
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default='N')
-    task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    assignees = models.ManyToManyField(Worker)
+    task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="task")
+    assignees = models.ManyToManyField(Worker, related_name="task")
