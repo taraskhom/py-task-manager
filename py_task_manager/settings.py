@@ -128,3 +128,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'taskhub.Worker'
+
+LOGIN_REDIRECT_URL = 'taskhub:index'
