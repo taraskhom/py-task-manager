@@ -5,6 +5,9 @@ from django.db import models
 class Position(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Worker(AbstractUser):
     position = models.ForeignKey(Position, on_delete=models.CASCADE, related_name="worker")
@@ -13,15 +16,17 @@ class Worker(AbstractUser):
 class TaskType(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Task(models.Model):
 
     PRIORITY_CHOICES = [
-        ('U', 'Urgent'),
-        ('H', 'High Priority'),
-        ('M', 'Medium Priority'),
-        ('L', 'Low Priority'),
-        ('N', 'Normal'),
+        ('1', 'Urgent'),
+        ('2', 'High Priority'),
+        ('3', 'Medium Priority'),
+        ('4', 'Low Priority')
     ]
 
     name = models.CharField(max_length=100)
@@ -31,3 +36,10 @@ class Task(models.Model):
     priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default='N')
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="task")
     assignees = models.ManyToManyField(Worker, related_name="task")
+    assigned_by = models.ForeignKey(
+        Worker,
+        on_delete=models.CASCADE,
+        blank=True,
+        related_name="assigned_task"
+    )
+

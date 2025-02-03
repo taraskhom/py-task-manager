@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block sidebar_container %}
+  <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
+      {% include "includes/sidebar.html" %}
+  </div>
+{% endblock sidebar_container %}
+
+{% block content_col_class %}col-md-9 col-lg-10{% endblock content_col_class %}
+
+{% block content %}
+  <div class="row">
+    <div class="container mt-4">
+    <div class="col-md-5">
+    <h2>{{ task.name }}</h2>
+    <p><strong>Description:</strong> {{ task.description }}</p>
+    <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+    <p><strong>Priority:</strong>
+      {% if task.priority == '1' %}
+        Urgent
+      {% elif task.priority == '2' %}
+        High Priority
+      {% elif task.priority == '3' %}
+        Medium Priority
+      {% else %}
+        Low Priority
+      {% endif %}
+    </p>
+    <p><strong>Assigned by:</strong>
+      {{ task.assigned_by.first_name }} {{ task.assigned_by.last_name }}
+    </p>
+    <p><strong>Assigned to:</strong>
+      {% for assignee in task.assignees.all %}
+        {{ assignee.first_name }} {{ assignee.last_name }} {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+
+
+    <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
+        {% if task.is_completed %}
+          Undo
+        {% else %}
+          Mark as Completed
+        {% endif %}
+      </button>
+    </form>
+    </div>
+  </div>
+  </div>
+{% endblock %}

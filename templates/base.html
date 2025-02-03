@@ -18,17 +18,11 @@
   {% include "includes/header.html" %}
 
   <div class="container-fluid mt-5">
-    <div class="container-fluid">
-      <div class="row">
-        {% if sidebar_exists %}
-        <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
-          {% block sidebar %}{% endblock %}
-        </div>
-        {% endif %}
+    <div class="row">
+      {% block sidebar_container %}{% endblock sidebar_container %}
 
-        <div class="{% if sidebar_exists %}col-md-9 col-lg-10{% else %}col-12{% endif %} p-4">
-          {% block content %}{% endblock %}
-        </div>
+      <div class="{% block content_col_class %}col-12{% endblock content_col_class %} p-4">
+        {% block content %}{% endblock content %}
       </div>
     </div>
   </div>
