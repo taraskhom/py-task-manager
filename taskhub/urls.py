@@ -12,7 +12,7 @@ urlpatterns = [
     path('task_list', TaskListView.as_view(), name='task_list'),
     path('task_detail/<int:pk>/', TaskDetailView.as_view(), name='task_detail'),
     path('task/<int:task_id>/toggle_completion/', change_task_status, name='toggle_task_completion'),
-    path('task_create', TaskCreateView.as_view(), name='task_create')
+    path('task_create', TaskCreateView.as_view(), name='task_create'),
 ]
 
 app_name = 'taskhub'

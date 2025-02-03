@@ -29,7 +29,7 @@
             </div>
           <br>
             <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
+                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
                 {% csrf_token %}
                 <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
                 {% if task.is_completed %}
@@ -65,7 +65,7 @@
             </div>
           <br>
             <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
+                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
                 {% csrf_token %}
                 <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
                 {% if task.is_completed %}
@@ -102,7 +102,7 @@
             </div>
           <br>
             <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
+                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
                 {% csrf_token %}
                 <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
                 {% if task.is_completed %}
@@ -136,7 +136,7 @@
             </div>
           <br>
             <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
+                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
                 {% csrf_token %}
                 <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
                 {% if task.is_completed %}
@@ -152,6 +152,40 @@
   {% empty %}
   <div class="col-12">
     <p class="text-center">There is no uncompleted tasks</p>
+  </div>
+  {% endfor %}
+</div>
+    {% elif status == 'assigned' %}
+    <h3 class="text-center">Assigned tasks ({{ assigned_tasks.count }}) <a href="{% url 'taskhub:task_create'%}" class="btn btn-primary">Assign task</a></h3>
+<div class="row">
+  {% for task in assigned_tasks %}
+  <div class="col-12 mb-3">
+    <div class="card p-3 bg-light">
+      <h5 class="text-center">{{ task.name }}</h5>
+      <p class="text-center">Task type: {{ task.task_type }}</p>
+      <p class="text-center">Priority: {{ task.get_priority_display }}</p>
+      <p class="text-center">Deadline: {{ task.deadline }}</p>
+      <div class="text-center">
+              <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
+            </div>
+          <br>
+            <div class="text-center">
+                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
+                {% if task.is_completed %}
+                Undo
+                {% else %}
+                Complete
+                {% endif %}
+                </button>
+                </form>
+              </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <p class="text-center">There is no assigned tasks</p>
   </div>
   {% endfor %}
 </div>

@@ -1,4 +1,5 @@
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
@@ -60,6 +61,10 @@ class TaskListView(generic.ListView):
             is_completed=True, assignees=self.request.user
         ).order_by('-deadline')
 
+        context['assigned_tasks'] = Task.objects.filter(
+            assigned_by=self.request.user
+        ).order_by('-deadline')
+
         return context
 
 
@@ -72,15 +77,20 @@ def change_task_status(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.is_completed = not task.is_completed
     task.save()
+
+    next_url = request.GET.get('next')
+    if next_url:
+        return HttpResponseRedirect(next_url)
+
     return redirect('taskhub:task_detail', pk=task.id)
 
 
 class TaskCreateView(generic.CreateView):
     model = Task
-    success_url = reverse_lazy('taskhub:task_list')
     template_name = 'taskhub/task_form.html'
     fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
 
     def form_valid(self, form):
         form.instance.assigned_by = self.request.user
-        return super().form_valid(form)
+        self.object = form.save()
+        return redirect(reverse_lazy('taskhub:task_list') + '?status=assigned')

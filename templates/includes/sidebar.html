@@ -2,8 +2,8 @@
   <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href="{% url "taskhub:task_list" %}">All tasks</a></li>
     <li class="nav-item"><a class="nav-link" href="{% url "taskhub:task_list" %}?status=uncompleted">Uncompleted tasks</a></li>
-    <li class="nav-item"><a class="nav-link" href="{% url "taskhub:task_list"%}?status=completed">Completed tasks</a></li>
-    <li class="nav-item"><a class="nav-link" href="#">Assigned task</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url "taskhub:task_list" %}?status=completed">Completed tasks</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url "taskhub:task_list" %}?status=assigned">Assigned tasks</a></li>
     <li class="nav-item"><a class="nav-link" href="#">Positions</a></li>
     <li class="nav-item"><a class="nav-link" href="#">Task types</a></li>
   </ul>
