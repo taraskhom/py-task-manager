@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block sidebar_container %}
+  <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
+      {% include "includes/sidebar.html" %}
+  </div>
+{% endblock sidebar_container %}
+
+{% block content_col_class %}col-md-9 col-lg-10{% endblock content_col_class %}
+
+{% block content %}
+  <h2>
+    Task types
+    <a href="{% url 'taskhub:task_type_create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h2>
+  {% if task_types %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for task_type in task_types %}
+        <tr>
+          <td>
+              {{ task_type.name }}
+          </td>
+          <td>
+              <a href="{% url 'taskhub:task_type_update' pk=task_type.id %}">
+                Update
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                href="{% url 'taskhub:task_type_delete' pk=task_type.id %}">
+                Delete
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+      <p>There are no positions in the service.</p>
+  {% endif %}
+{% endblock %}

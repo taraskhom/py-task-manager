@@ -13,7 +13,11 @@ from taskhub.views import (WorkerRegistrationView,
                            PositionListView,
                            PositionCreateView,
                            PositionUpdateView,
-                           PositionDeleteView)
+                           PositionDeleteView,
+                           TaskTypeListView,
+                           TaskTypeCreateView,
+                           TaskTypeUpdateView,
+                           TaskTypeDeleteView)
 
 
 urlpatterns = [
@@ -32,6 +36,10 @@ urlpatterns = [
     path('position/create', PositionCreateView.as_view(), name='position_create'),
     path('position/<int:pk>/update', PositionUpdateView.as_view(), name='position_update'),
     path('position/<int:pk>/delete', PositionDeleteView.as_view(), name='position_delete'),
+    path('task_types', TaskTypeListView.as_view(), name='task_type_list'),
+    path('task_type/create', TaskTypeCreateView.as_view(), name='task_type_create'),
+    path('task_type/<int:pk>/update', TaskTypeUpdateView.as_view(), name='task_type_update'),
+    path('task_type/<int:pk>/delete', TaskTypeDeleteView.as_view(), name='task_type_delete'),
 ]
 
 app_name = 'taskhub'
