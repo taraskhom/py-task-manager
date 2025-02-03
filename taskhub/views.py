@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
-from .forms import WorkerRegistrationForm
+from .forms import WorkerRegistrationForm, WorkerUpdateForm
 from .models import Worker, Task, Position, TaskType
 
 
@@ -29,6 +29,13 @@ class WorkerRegistrationView(generic.CreateView):
 class WorkerLoginView(LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('taskhub:index')
+
+
+class WorkerUpdateView(generic.UpdateView):
+    model = Worker
+    form_class = WorkerUpdateForm
+    template_name = 'registration/profile_page.html'
+    success_url = reverse_lazy('worker_list')
 
 
 def worker_logout(request):

@@ -17,7 +17,8 @@ from taskhub.views import (WorkerRegistrationView,
                            TaskTypeListView,
                            TaskTypeCreateView,
                            TaskTypeUpdateView,
-                           TaskTypeDeleteView)
+                           TaskTypeDeleteView,
+                           WorkerUpdateView)
 
 
 urlpatterns = [
@@ -25,6 +26,7 @@ urlpatterns = [
     path('register/', WorkerRegistrationView.as_view(), name='register'),
     path('login/', WorkerLoginView.as_view(), name='login'),
     path('logout/', worker_logout, name='logout'),
+    path('worker/<int:pk>/update/', WorkerUpdateView.as_view(), name='worker_update'),
     path('', index, name='index'),
     path('tasks', TaskListView.as_view(), name='task_list'),
     path('task/<int:pk>/', TaskDetailView.as_view(), name='task_detail'),
