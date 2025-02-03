@@ -35,7 +35,7 @@ class WorkerUpdateView(generic.UpdateView):
     model = Worker
     form_class = WorkerUpdateForm
     template_name = 'registration/profile_page.html'
-    success_url = reverse_lazy('worker_list')
+    success_url = reverse_lazy('taskhub:task_list')
 
 
 def worker_logout(request):
@@ -64,7 +64,7 @@ class TaskListView(generic.ListView):
 
         context['uncompleted_tasks'] = Task.objects.filter(
             is_completed=False, assignees=self.request.user
-        ).order_by('deadline', '-priority')
+        ).order_by('deadline', 'priority')
 
         context['completed_tasks'] = Task.objects.filter(
             is_completed=True, assignees=self.request.user

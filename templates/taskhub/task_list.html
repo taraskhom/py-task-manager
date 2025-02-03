@@ -12,171 +12,39 @@
 
 {% block content %}
   {% if not status %}
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-5" style="border-right: 1px solid #ccc;">
-      <h3 class="text-center">Uncompleted tasks ({{ uncompleted_tasks.count }}) </h3>
-      <div class="row">
-        {% for task in uncompleted_tasks %}
-        <div class="col-12 mb-3">
-          <div class="card p-3 shadow-sm">
-            <h5 class="text-center">{{ task.name }}</h5>
-            <p class="text-center">Task type: {{ task.task_type }}</p>
-            <p class="text-center">Priority: {{ task.get_priority_display }}</p>
-            <p class="text-center">Deadline: {{ task.deadline }}</p>
-            <div class="text-center">
-              <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
-            </div>
-          <br>
-            <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
-                {% csrf_token %}
-                <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
-                {% if task.is_completed %}
-                Undo
-                {% else %}
-                Complete
-                {% endif %}
-                </button>
-                </form>
-              </div>
-          </div>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-5" style="border-right: 1px solid #ccc;">
+          <h3 class="text-center">Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
+          {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=request.path empty_message="There is no uncompleted tasks" hide_toggle=False %}
         </div>
-        {% empty %}
-        <div class="col-12">
-          <p class="text-center">There is no uncompleted tasks</p>
+
+        <div class="col-md-5">
+          <h3 class="text-center">Completed tasks ({{ completed_tasks.count }})</h3>
+          {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=request.path empty_message="There is no completed tasks" hide_toggle=False %}
         </div>
-        {% endfor %}
       </div>
     </div>
 
-    <div class="col-md-5">
-      <h3 class="text-center">Completed tasks ({{ completed_tasks.count }})</h3>
-      <div class="row">
-        {% for task in completed_tasks %}
-        <div class="col-12 mb-3">
-          <div class="card p-3 bg-light">
-            <h5 class="text-center">{{ task.name }}</h5>
-            <p class="text-center">Task type: {{ task.task_type }}</p>
-            <p class="text-center">Priority: {{ task.get_priority_display }}</p>
-            <p class="text-center">Deadline: {{ task.deadline }}</p>
-            <div class="text-center">
-              <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
-            </div>
-          <br>
-            <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
-                {% csrf_token %}
-                <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
-                {% if task.is_completed %}
-                Undo
-                {% else %}
-                Complete
-                {% endif %}
-                </button>
-                </form>
-              </div>
-          </div>
-        </div>
-        {% empty %}
-        <div class="col-12">
-          <p class="text-center">There is no completed tasks</p>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
   {% elif status == 'completed' %}
     <h3 class="text-center">Completed tasks ({{ completed_tasks.count }})</h3>
-<div class="row">
-  {% for task in completed_tasks %}
-  <div class="col-12 mb-3">
-    <div class="card p-3 bg-light">
-      <h5 class="text-center">{{ task.name }}</h5>
-      <p class="text-center">Task type: {{ task.task_type }}</p>
-      <p class="text-center">Priority: {{ task.get_priority_display }}</p>
-      <p class="text-center">Deadline: {{ task.deadline }}</p>
-      <div class="text-center">
-              <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
-            </div>
-          <br>
-            <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
-                {% csrf_token %}
-                <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
-                {% if task.is_completed %}
-                Undo
-                {% else %}
-                Complete
-                {% endif %}
-                </button>
-                </form>
-              </div>
-    </div>
-  </div>
-  {% empty %}
-  <div class="col-12">
-    <p class="text-center">There is no completed tasks</p>
-  </div>
-  {% endfor %}
-</div>
+    {% url 'taskhub:task_list' as task_list_url %}
+    {% with next_page=task_list_url|add:"?status=completed" %}
+      {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=next_page empty_message="There is no completed tasks" hide_toggle=False %}
+    {% endwith %}
+
   {% elif status == 'uncompleted' %}
     <h3 class="text-center">Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
-<div class="row">
-  {% for task in uncompleted_tasks %}
-  <div class="col-12 mb-3">
-    <div class="card p-3 bg-white">
-      <h5 class="text-center">{{ task.name }}</h5>
-      <p class="text-center">Task type: {{ task.task_type }}</p>
-      <p class="text-center">Priority: {{ task.get_priority_display }}</p>
-      <p class="text-center">Deadline: {{ task.deadline }}</p>
-      <div class="text-center">
-              <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
-            </div>
-          <br>
-            <div class="text-center">
-                <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ request.path }}">
-                {% csrf_token %}
-                <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
-                {% if task.is_completed %}
-                Undo
-                {% else %}
-                Complete
-                {% endif %}
-                </button>
-                </form>
-              </div>
-    </div>
-  </div>
-  {% empty %}
-  <div class="col-12">
-    <p class="text-center">There is no uncompleted tasks</p>
-  </div>
-  {% endfor %}
-</div>
-    {% elif status == 'assigned' %}
-    <h3 class="text-center">Assigned tasks ({{ assigned_tasks.count }}) <a href="{% url 'taskhub:task_create'%}" class="btn btn-primary">Assign task</a></h3>
-<div class="row">
-  {% for task in assigned_tasks %}
-  <div class="col-12 mb-3">
-    <div class="card p-3 bg-light">
-      <h5 class="text-center">{{ task.name }}</h5>
-      <p class="text-center">Task type: {{ task.task_type }}</p>
-      <p class="text-center">Priority: {{ task.get_priority_display }}</p>
-      <p class="text-center">Deadline: {{ task.deadline }}</p>
-      <div class="text-center">
-        <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
-        <a href="{% url 'taskhub:task_update' task.id %}" class="btn btn-primary">Update</a>
-        <a href="{% url 'taskhub:task_delete' task.id %}" class="btn btn-danger">Delete</a>
-      </div>
-  </div>
-  </div>
-  {% empty %}
-  <div class="col-12">
-    <p class="text-center">There is no assigned tasks</p>
-  </div>
-  {% endfor %}
-</div>
+    {% url 'taskhub:task_list' as task_list_url %}
+    {% with next_page=task_list_url|add:"?status=uncompleted" %}
+      {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=next_page empty_message="There is no uncompleted tasks" hide_toggle=False %}
+    {% endwith %}
+
+  {% elif status == 'assigned' %}
+    <h3 class="text-center">
+      Assigned tasks ({{ assigned_tasks.count }})
+      <a href="{% url 'taskhub:task_create' %}" class="btn btn-primary">Assign task</a>
+    </h3>
+    {% include "includes/task_list.html" with tasks=assigned_tasks card_class="bg-light" next_page=request.path empty_message="There is no assigned tasks" hide_toggle=True %}
   {% endif %}
 {% endblock %}

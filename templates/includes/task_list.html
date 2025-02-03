@@ -1,0 +1,11 @@
+{% if tasks %}
+  <div class="row">
+    {% for task in tasks %}
+      {% include "includes/task_card.html" with task=task card_class=card_class next_page=next_page hide_toggle=hide_toggle %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="col-12">
+    <p class="text-center">{{ empty_message }}</p>
+  </div>
+{% endif %}
