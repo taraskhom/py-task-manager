@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
 from .forms import WorkerRegistrationForm
-from .models import Worker, Task
+from .models import Worker, Task, Position
 
 
 def index(request):
@@ -117,3 +117,29 @@ class TaskDeleteView(generic.DeleteView):
         url = reverse_lazy('taskhub:task_list')
         query_params = urlencode({'status': 'assigned'})
         return f"{url}?{query_params}"
+
+
+class PositionListView(generic.ListView):
+    model = Position
+    template_name = 'taskhub/position_list.html'
+    context_object_name = 'positions'
+
+
+class PositionCreateView(generic.CreateView):
+    model = Position
+    template_name = 'taskhub/position_form.html'
+    fields = '__all__'
+    success_url = reverse_lazy('taskhub:positions_list')
+
+
+class PositionUpdateView(generic.UpdateView):
+    model = Position
+    template_name = 'taskhub/position_form.html'
+    fields = '__all__'
+    success_url = reverse_lazy('taskhub:positions_list')
+
+
+class PositionDeleteView(generic.DeleteView):
+    model = Position
+    template_name = 'taskhub/position_confirm_delete.html'
+    success_url = reverse_lazy('taskhub:positions_list')
