@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -94,3 +96,24 @@ class TaskCreateView(generic.CreateView):
         form.instance.assigned_by = self.request.user
         self.object = form.save()
         return redirect(reverse_lazy('taskhub:task_list') + '?status=assigned')
+
+
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    template_name = 'taskhub/task_form.html'
+    fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
+
+    def form_valid(self, form):
+        form.instance.assigned_by = self.request.user
+        self.object = form.save()
+        return redirect(reverse_lazy('taskhub:task_list') + '?status=assigned')
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    template_name = None
+
+    def get_success_url(self):
+        url = reverse_lazy('taskhub:task_list')
+        query_params = urlencode({'status': 'assigned'})
+        return f"{url}?{query_params}"
