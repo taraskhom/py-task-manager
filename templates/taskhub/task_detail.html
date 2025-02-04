@@ -1,52 +1,56 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block sidebar_container %}
-  <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
+  <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
       {% include "includes/sidebar.html" %}
   </div>
 {% endblock sidebar_container %}
 
-{% block content_col_class %}col-md-9 col-lg-10{% endblock content_col_class %}
+{% block content_col_class %}col-md-9 col-lg-10 offset-md-3 offset-lg-2{% endblock content_col_class %}
 
 {% block content %}
-  <div class="row">
-    <div class="container mt-4">
-    <div class="col-md-5">
-    <h2>{{ task.name }}</h2>
-    <p><strong>Description:</strong> {{ task.description }}</p>
-    <p><strong>Deadline:</strong> {{ task.deadline }}</p>
-    <p><strong>Priority:</strong>
-      {% if task.priority == '1' %}
-        Urgent
-      {% elif task.priority == '2' %}
-        High Priority
-      {% elif task.priority == '3' %}
-        Medium Priority
-      {% else %}
-        Low Priority
-      {% endif %}
-    </p>
-    <p><strong>Assigned by:</strong>
-      {{ task.assigned_by.first_name }} {{ task.assigned_by.last_name }}
-    </p>
-    <p><strong>Assigned to:</strong>
-      {% for assignee in task.assignees.all %}
-        {{ assignee.first_name }} {{ assignee.last_name }} {% if not forloop.last %}, {% endif %}
-      {% endfor %}
-    </p>
-
-
-    <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}">
-      {% csrf_token %}
-      <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
-        {% if task.is_completed %}
-          Undo
-        {% else %}
-          Complete
-        {% endif %}
-      </button>
-    </form>
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <!-- Заголовок картки з ніжним синім відтінком -->
+      <div class="card-header" style="background-color: #5a9bd8; color: #fff;">
+        <h2 class="mb-0">{{ task.name }}</h2>
+      </div>
+      <!-- Тіло картки із чистим білим фоном -->
+      <div class="card-body" style="background-color: #ffffff;">
+        <p class="card-text"><strong>Description:</strong> {{ task.description }}</p>
+        <p class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</p>
+        <p class="card-text"><strong>Priority:</strong>
+          {% if task.priority == '1' %}
+            Urgent
+          {% elif task.priority == '2' %}
+            High Priority
+          {% elif task.priority == '3' %}
+            Medium Priority
+          {% else %}
+            Low Priority
+          {% endif %}
+        </p>
+        <p class="card-text"><strong>Assigned by:</strong> {{ task.assigned_by.first_name }} {{ task.assigned_by.last_name }}</p>
+        <p class="card-text"><strong>Assigned to:</strong>
+          {% for assignee in task.assignees.all %}
+            {{ assignee.first_name }} {{ assignee.last_name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+      </div>
+      <!-- Футер картки із дуже світлим відтінком для контрасту -->
+      <div class="card-footer text-end" style="background-color: #f7f9fc;">
+        <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn {% if task.is_completed %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+            {% if task.is_completed %}
+              Undo
+            {% else %}
+              Complete
+            {% endif %}
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
   </div>
 {% endblock %}

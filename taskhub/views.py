@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
 
-from .forms import WorkerRegistrationForm, WorkerUpdateForm
+from .forms import WorkerRegistrationForm, WorkerUpdateForm, TaskForm, TaskTypeForm, PositionForm
 from .models import Worker, Task, Position, TaskType
 
 
@@ -99,8 +99,8 @@ def change_task_status(request, task_id):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
+    form_class = TaskForm
     template_name = 'taskhub/task_form.html'
-    fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
 
     def form_valid(self, form):
         form.instance.assigned_by = self.request.user
@@ -111,7 +111,7 @@ class TaskCreateView(LoginRequiredMixin, generic.CreateView):
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
     template_name = 'taskhub/task_form.html'
-    fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
+    form_class = TaskForm
 
     def form_valid(self, form):
         form.instance.assigned_by = self.request.user
@@ -138,14 +138,14 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
     template_name = 'taskhub/position_form.html'
-    fields = '__all__'
+    form_class = PositionForm
     success_url = reverse_lazy('taskhub:positions_list')
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
     template_name = 'taskhub/position_form.html'
-    fields = '__all__'
+    form_class = PositionForm
     success_url = reverse_lazy('taskhub:positions_list')
 
 
@@ -164,14 +164,14 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     template_name = 'taskhub/task_type_form.html'
-    fields = '__all__'
+    form_class = TaskTypeForm
     success_url = reverse_lazy('taskhub:task_type_list')
 
 
 class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     template_name = 'taskhub/task_type_form.html'
-    fields = '__all__'
+    form_class = TaskTypeForm
     success_url = reverse_lazy('taskhub:task_type_list')
 
 

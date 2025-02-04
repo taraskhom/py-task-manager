@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block sidebar_container %}
-  <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
+  <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
       {% include "includes/sidebar.html" %}
   </div>
 {% endblock sidebar_container %}
 
-{% block content_col_class %}col-md-9 col-lg-10{% endblock content_col_class %}
+{% block content_col_class %}col-md-9 col-lg-10 offset-md-3 offset-lg-2{% endblock content_col_class %}
 
 {% block content %}
   <form method="post">

@@ -1,48 +1,63 @@
 {% extends "base.html" %}
+{% load static %}  <!-- Додано правильний тег для статичних файлів -->
 
 {% block sidebar_container %}
-  <div class="col-md-3 col-lg-2 bg-light p-3 vh-100">
+  <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
       {% include "includes/sidebar.html" %}
   </div>
 {% endblock sidebar_container %}
 
-{% block content_col_class %}col-md-9 col-lg-10{% endblock content_col_class %}
+{% block content_col_class %}col-md-9 col-lg-10 offset-md-3 offset-lg-2{% endblock content_col_class %}
 
 {% block content %}
-  {% if not status %}
-    <div class="container mt-4">
+  <div class="container mt-4">
+    {% if not status %}
       <div class="row justify-content-center">
-        <div class="col-md-5" style="border-right: 1px solid #ccc;">
-          <h3 class="text-center">Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
-          {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=request.path empty_message="There is no uncompleted tasks" hide_toggle=False %}
+        <div class="col-md-5">
+          <div class="task-container">
+            <h3>Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
+            {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=request.path empty_message="There are no uncompleted tasks" hide_toggle=False %}
+          </div>
         </div>
 
         <div class="col-md-5">
-          <h3 class="text-center">Completed tasks ({{ completed_tasks.count }})</h3>
-          {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=request.path empty_message="There is no completed tasks" hide_toggle=False %}
+          <div class="task-container">
+            <h3>Completed tasks ({{ completed_tasks.count }})</h3>
+            {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=request.path empty_message="There are no completed tasks" hide_toggle=False %}
+          </div>
         </div>
       </div>
-    </div>
 
-  {% elif status == 'completed' %}
-    <h3 class="text-center">Completed tasks ({{ completed_tasks.count }})</h3>
-    {% url 'taskhub:task_list' as task_list_url %}
-    {% with next_page=task_list_url|add:"?status=completed" %}
-      {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=next_page empty_message="There is no completed tasks" hide_toggle=False %}
-    {% endwith %}
+    {% elif status == 'completed' %}
+      <div class="task-container">
+        <h3>Completed tasks ({{ completed_tasks.count }})</h3>
+        {% url 'taskhub:task_list' as task_list_url %}
+        {% with next_page=task_list_url|add:"?status=completed" %}
+          {% include "includes/task_list.html" with tasks=completed_tasks card_class="bg-light" next_page=next_page empty_message="There are no completed tasks" hide_toggle=False %}
+        {% endwith %}
+      </div>
 
-  {% elif status == 'uncompleted' %}
-    <h3 class="text-center">Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
-    {% url 'taskhub:task_list' as task_list_url %}
-    {% with next_page=task_list_url|add:"?status=uncompleted" %}
-      {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=next_page empty_message="There is no uncompleted tasks" hide_toggle=False %}
-    {% endwith %}
+    {% elif status == 'uncompleted' %}
+      <div class="task-container">
+        <h3>Uncompleted tasks ({{ uncompleted_tasks.count }})</h3>
+        {% url 'taskhub:task_list' as task_list_url %}
+        {% with next_page=task_list_url|add:"?status=uncompleted" %}
+          {% include "includes/task_list.html" with tasks=uncompleted_tasks card_class="bg-white" next_page=next_page empty_message="There are no uncompleted tasks" hide_toggle=False %}
+        {% endwith %}
+      </div>
 
-  {% elif status == 'assigned' %}
-    <h3 class="text-center">
-      Assigned tasks ({{ assigned_tasks.count }})
-      <a href="{% url 'taskhub:task_create' %}" class="btn btn-primary">Assign task</a>
-    </h3>
-    {% include "includes/task_list.html" with tasks=assigned_tasks card_class="bg-light" next_page=request.path empty_message="There is no assigned tasks" hide_toggle=True %}
-  {% endif %}
+    {% elif status == 'assigned' %}
+      <div class="task-container">
+        <h3 class="d-flex justify-content-between align-items-center">
+          Assigned tasks ({{ assigned_tasks.count }})
+          <a href="{% url 'taskhub:task_create' %}" class="btn btn-primary">Assign task</a>
+        </h3>
+        {% include "includes/task_list.html" with tasks=assigned_tasks card_class="bg-light" next_page=request.path empty_message="There are no assigned tasks" hide_toggle=True %}
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}
+
+<!-- Підключення JavaScript ПІСЛЯ закриття блоку -->
+<script src="{% static 'js/scripts.js' %}"></script>
+
