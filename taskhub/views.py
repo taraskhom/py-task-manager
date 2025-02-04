@@ -1,11 +1,13 @@
 from urllib.parse import urlencode
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
+
 from .forms import WorkerRegistrationForm, WorkerUpdateForm
 from .models import Worker, Task, Position, TaskType
 
@@ -31,23 +33,23 @@ class WorkerLoginView(LoginView):
     success_url = reverse_lazy('taskhub:index')
 
 
-class WorkerUpdateView(generic.UpdateView):
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
     form_class = WorkerUpdateForm
     template_name = 'registration/profile_page.html'
     success_url = reverse_lazy('taskhub:task_list')
 
 
+@login_required
 def worker_logout(request):
     if request.method == 'GET':
         logout(request)
         return redirect('taskhub:index')
 
 
-class TaskListView(generic.ListView):
+class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     template_name = 'taskhub/task_list.html'
-    paginate_by = 6
     context_object_name = 'tasks'
 
     def get_queryset(self):
@@ -77,11 +79,12 @@ class TaskListView(generic.ListView):
         return context
 
 
-class TaskDetailView(generic.DetailView):
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
     template_name = 'taskhub/task_detail.html'
 
 
+@login_required
 def change_task_status(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.is_completed = not task.is_completed
@@ -94,7 +97,7 @@ def change_task_status(request, task_id):
     return redirect('taskhub:task_detail', pk=task.id)
 
 
-class TaskCreateView(generic.CreateView):
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     template_name = 'taskhub/task_form.html'
     fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
@@ -105,7 +108,7 @@ class TaskCreateView(generic.CreateView):
         return redirect(reverse_lazy('taskhub:task_list') + '?status=assigned')
 
 
-class TaskUpdateView(generic.UpdateView):
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Task
     template_name = 'taskhub/task_form.html'
     fields = ['name', 'description', 'deadline', 'priority', 'task_type', 'assignees']
@@ -116,7 +119,7 @@ class TaskUpdateView(generic.UpdateView):
         return redirect(reverse_lazy('taskhub:task_list') + '?status=assigned')
 
 
-class TaskDeleteView(generic.DeleteView):
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     template_name = None
 
@@ -126,53 +129,53 @@ class TaskDeleteView(generic.DeleteView):
         return f"{url}?{query_params}"
 
 
-class PositionListView(generic.ListView):
+class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     template_name = 'taskhub/position_list.html'
     context_object_name = 'positions'
 
 
-class PositionCreateView(generic.CreateView):
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
     template_name = 'taskhub/position_form.html'
     fields = '__all__'
     success_url = reverse_lazy('taskhub:positions_list')
 
 
-class PositionUpdateView(generic.UpdateView):
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
     template_name = 'taskhub/position_form.html'
     fields = '__all__'
     success_url = reverse_lazy('taskhub:positions_list')
 
 
-class PositionDeleteView(generic.DeleteView):
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     template_name = 'taskhub/position_confirm_delete.html'
     success_url = reverse_lazy('taskhub:positions_list')
 
 
-class TaskTypeListView(generic.ListView):
+class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     template_name = 'taskhub/task_type_list.html'
     context_object_name = 'task_types'
 
 
-class TaskTypeCreateView(generic.CreateView):
+class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     template_name = 'taskhub/task_type_form.html'
     fields = '__all__'
     success_url = reverse_lazy('taskhub:task_type_list')
 
 
-class TaskTypeUpdateView(generic.UpdateView):
+class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     template_name = 'taskhub/task_type_form.html'
     fields = '__all__'
     success_url = reverse_lazy('taskhub:task_type_list')
 
 
-class TaskTypeDeleteView(generic.DeleteView):
+class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     template_name = 'taskhub/task_type_confirm_delete.html'
     success_url = reverse_lazy('taskhub:task_type_list')
