@@ -1,1 +1,64 @@
 {% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold">Welcome to TaskHub</h1>
+        <p class="lead text-muted">Manage your tasks efficiently with ease.</p>
+        <div class="mt-4">
+            {% if user.is_authenticated %}
+                <a href="{% url 'taskhub:task_list' %}" class="btn btn-primary btn-lg">Tasks</a>
+            {% else %}
+                <a href="{% url 'taskhub:login' %}" class="btn btn-primary btn-lg">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">Task Management</h5>
+                    <p class="text-muted">Create, assign, and track your tasks effortlessly.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">Worklife</h5>
+                    <p class="text-muted">Work with your team and improve productivity.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Analytics & Reports</h5>
+                    <p class="text-muted">Monitor progress with detailed insights.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 text-center">
+        <h2 class="fw-bold">How It Works</h2>
+        <p class="text-muted">Get started in just three simple steps.</p>
+    </div>
+    <br>
+    <div class="row mt-4 text-center">
+        <div class="col-md-4">
+            <h4 class="fw-semibold">1. Sign Up</h4>
+            <p class="text-muted">Create an account and set up your workspace.</p>
+        </div>
+        <div class="col-md-4">
+            <h4 class="fw-semibold">2. Add Tasks</h4>
+            <p class="text-muted">Create tasks and assign them to your colleagues.</p>
+        </div>
+        <div class="col-md-4">
+            <h4 class="fw-semibold">3. Track Progress</h4>
+            <p class="text-muted">Watch deadlines and project completion.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
