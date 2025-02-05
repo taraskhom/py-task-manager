@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}  <!-- Додано правильний тег для статичних файлів -->
+{% load static %}
 
 {% block sidebar_container %}
   <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
@@ -58,6 +58,4 @@
   </div>
 {% endblock %}
 
-<!-- Підключення JavaScript ПІСЛЯ закриття блоку -->
 <script src="{% static 'js/scripts.js' %}"></script>
-

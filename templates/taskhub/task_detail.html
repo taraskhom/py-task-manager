@@ -12,11 +12,9 @@
 {% block content %}
   <div class="container mt-4">
     <div class="card shadow-sm">
-      <!-- Заголовок картки з ніжним синім відтінком -->
       <div class="card-header" style="background-color: #5a9bd8; color: #fff;">
         <h2 class="mb-0">{{ task.name }}</h2>
       </div>
-      <!-- Тіло картки із чистим білим фоном -->
       <div class="card-body" style="background-color: #ffffff;">
         <p class="card-text"><strong>Description:</strong> {{ task.description }}</p>
         <p class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</p>
@@ -38,7 +36,7 @@
           {% endfor %}
         </p>
       </div>
-      <!-- Футер картки із дуже світлим відтінком для контрасту -->
+
       <div class="card-footer text-end" style="background-color: #f7f9fc;">
         <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}" class="d-inline">
           {% csrf_token %}
