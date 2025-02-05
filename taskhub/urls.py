@@ -22,7 +22,6 @@ from taskhub.views import (WorkerRegistrationView,
 
 
 urlpatterns = [
-    #    path('admin/', admin.site.urls),
     path('register/', WorkerRegistrationView.as_view(), name='register'),
     path('login/', WorkerLoginView.as_view(), name='login'),
     path('logout/', worker_logout, name='logout'),
