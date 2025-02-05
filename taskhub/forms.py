@@ -55,7 +55,7 @@ class TaskForm(forms.ModelForm):
         deadline = self.cleaned_data.get('deadline')
 
         if deadline and deadline < now().date():
-            raise ValidationError("Deadline cannot be in the past!")
+            raise ValidationError('Deadline cannot be in the past!')
 
         return deadline
 
