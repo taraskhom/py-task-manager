@@ -33,7 +33,7 @@ class Task(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
-    priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default='N')
+    priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES, default='3')
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="task")
     assignees = models.ManyToManyField(Worker, related_name="task")
     assigned_by = models.ForeignKey(
@@ -42,4 +42,3 @@ class Task(models.Model):
         blank=True,
         related_name="assigned_task"
     )
-

@@ -12,7 +12,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-
+{% block extra_scripts %}{% endblock extra_scripts %}
 <body>
 
   {% include "includes/header.html" %}

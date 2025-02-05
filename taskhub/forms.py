@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.utils.timezone import now
+from django_select2.forms import Select2MultipleWidget
 
 from .models import Task, Position, TaskType, Worker
 
@@ -47,7 +48,7 @@ class TaskForm(forms.ModelForm):
 
     assignees = forms.ModelMultipleChoiceField(
         queryset=Worker.objects,
-        widget=forms.CheckboxSelectMultiple
+        widget=Select2MultipleWidget
     )
 
     def clean_deadline(self):

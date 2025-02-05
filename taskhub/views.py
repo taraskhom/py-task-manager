@@ -23,9 +23,10 @@ class WorkerRegistrationView(generic.CreateView):
     success_url = reverse_lazy('taskhub:index')
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return super().form_valid(form)
+        self.object = form.save()
+        self.object.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(self.request, self.object)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class WorkerLoginView(LoginView):

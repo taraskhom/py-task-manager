@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_scripts %}
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#id_assignees').select2({
+            placeholder: "Chose assignees",
+            allowClear: true
+        });
+    });
+  </script>
+{% endblock extra_scripts %}
+
 {% block sidebar_container %}
   <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
       {% include "includes/sidebar.html" %}
