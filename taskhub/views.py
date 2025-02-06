@@ -8,14 +8,14 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.views import generic
 
-from .forms import (
+from taskhub.forms import (
     WorkerRegistrationForm,
     WorkerUpdateForm,
     TaskForm,
     TaskTypeForm,
     PositionForm
 )
-from .models import Worker, Task, Position, TaskType
+from taskhub.models import Worker, Task, Position, TaskType
 
 
 def index(request):

@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from django_select2.forms import Select2MultipleWidget
 
-from .models import Task, Position, TaskType, Worker
+from taskhub.models import Task, Position, TaskType, Worker
 
 
 class WorkerRegistrationForm(UserCreationForm):

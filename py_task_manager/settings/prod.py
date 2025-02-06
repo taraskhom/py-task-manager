@@ -1,4 +1,4 @@
-from .base import *
+from py_task_manager.settings.base import *
 
 DEBUG = False
 
