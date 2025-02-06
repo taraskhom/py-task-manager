@@ -1,0 +1,28 @@
+<div class="col-12 mb-3">
+  <div class="card p-3 {{ card_class|default:"bg-light" }}">
+    <h5 class="text-center">{{ task.name }}</h5>
+    <p class="text-center">Task type: {{ task.task_type }}</p>
+    <p class="text-center">Priority: {{ task.get_priority_display }}</p>
+    <p class="text-center">Deadline: {{ task.deadline }}</p>
+
+    <div class="text-center">
+      <a href="{% url 'taskhub:task_detail' task.id %}" class="btn btn-primary">Detail</a>
+      {% if hide_toggle %}
+         <a href="{% url 'taskhub:task_update' task.id %}" class="btn btn-primary">Update</a>
+         <a href="{% url 'taskhub:task_delete' task.id %}" class="btn btn-danger">Delete</a>
+      {% endif %}
+    </div>
+
+    {% if not hide_toggle %}
+      <br>
+      <div class="text-center">
+        <form method="post" action="{% url 'taskhub:toggle_task_completion' task.id %}?next={{ next_page }}">
+          {% csrf_token %}
+          <button type="submit" class="btn {% if task.is_completed %}btn-danger{% else %}btn-success{% endif %}">
+            {% if task.is_completed %}Undo{% else %}Complete{% endif %}
+          </button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</div>

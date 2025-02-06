@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_scripts %}
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#id_assignees').select2({
+            placeholder: "Chose assignees",
+            allowClear: true
+        });
+    });
+  </script>
+{% endblock extra_scripts %}
+
+{% block sidebar_container %}
+  <div class="col-md-3 col-lg-2 d-none d-md-block bg-light p-3 fixed-sidebar">
+      {% include "includes/sidebar.html" %}
+  </div>
+{% endblock sidebar_container %}
+
+{% block content_col_class %}col-md-9 col-lg-10 offset-md-3 offset-lg-2{% endblock content_col_class %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header" style="background-color: #5a9bd8; color: #fff;">
+      <h3 class="mb-0">{{ object|yesno:"Update,Assign" }} Task</h3>
+    </div>
+    <div class="card-body" style="background-color: #ffffff;">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="id_name" class="form-label">Task Name</label>
+          {{ form.name }}
+          {% if form.name.errors %}
+            <div class="text-danger small">
+              {{ form.name.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="id_description" class="form-label">Task Description</label>
+          {{ form.description }}
+          {% if form.description.errors %}
+            <div class="text-danger small">
+              {{ form.description.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="id_deadline" class="form-label">Deadline</label>
+          {{ form.deadline }}
+          {% if form.deadline.errors %}
+            <div class="text-danger small">
+              {{ form.deadline.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="id_priority" class="form-label">Priority</label>
+          {{ form.priority }}
+          {% if form.priority.errors %}
+            <div class="text-danger small">
+              {{ form.priority.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="id_task_type" class="form-label">Task Type</label>
+          {{ form.task_type }}
+          {% if form.task_type.errors %}
+            <div class="text-danger small">
+              {{ form.task_type.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Assignees</label>
+          <div class="border rounded p-2">
+            {{ form.assignees }}
+            {% if form.assignees.errors %}
+              <div class="text-danger small">
+                {{ form.assignees.errors }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="card-footer text-end" style="background-color: #f7f9fc;">
+    </div>
+  </div>
+</div>
+{% endblock %}
