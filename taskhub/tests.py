@@ -157,16 +157,25 @@ class ChangeTaskStatusViewTests(TestCase):
         self.task.assignees.add(self.user)
 
     def test_toggle_task_status_without_next(self):
-        toggle_url = reverse('taskhub:toggle_task_completion', kwargs={'task_id': self.task.id})
+        toggle_url = reverse(
+            'taskhub:toggle_task_completion',
+            kwargs={'task_id': self.task.id}
+        )
         response = self.client.get(toggle_url)
         self.task.refresh_from_db()
         self.assertTrue(self.task.is_completed)
-        expected_redirect = reverse('taskhub:task_detail', kwargs={'pk': self.task.id})
+        expected_redirect = reverse(
+            'taskhub:task_detail',
+            kwargs={'pk': self.task.id}
+        )
         self.assertRedirects(response, expected_redirect)
 
     def test_toggle_task_status_with_next(self):
         next_url = reverse('taskhub:task_list')
-        toggle_url = reverse('taskhub:toggle_task_completion', kwargs={'task_id': self.task.id})
+        toggle_url = reverse(
+            'taskhub:toggle_task_completion',
+            kwargs={'task_id': self.task.id}
+        )
         response = self.client.get(f"{toggle_url}?next={next_url}")
         self.task.refresh_from_db()
         self.assertTrue(self.task.is_completed)
