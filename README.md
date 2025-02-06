@@ -13,6 +13,7 @@ py-task-manager is a Django-based web service for managing tasks. Unlike file-ba
 - [Usage](#usage)
 - [Example](#example)
 - [Contributing](#contributing)
+- [Live Demo](#live-demo)
 - [Contact Information](#contact-information)
 
 ---
