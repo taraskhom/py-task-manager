@@ -1,13 +1,9 @@
+import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-SECRET_KEY = 'django-insecure-^4mpp!0**pf6$4k=-ans3aw99nk2b^7b=sr2d^u=9v_1t92!--'
-
-DEBUG = True
-
-ALLOWED_HOSTS = []
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-^4mpp!0**pf6$4k=-ans3aw99nk2b^7b=sr2d^u=9v_1t92!--')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,6 +18,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -50,13 +47,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'py_task_manager.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
